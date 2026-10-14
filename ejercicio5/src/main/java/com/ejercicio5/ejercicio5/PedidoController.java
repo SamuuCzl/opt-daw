@@ -16,9 +16,8 @@ public class PedidoController {
             unidades += p.cantidad;
 
             total = total.add(
-                    p.precioUnitario.multiply(
-                            BigDecimal.valueOf(p.cantidad)
-                    )
+
+                    p.precioUnitario.multiply(BigDecimal.valueOf(p.cantidad))
             );
         }
 

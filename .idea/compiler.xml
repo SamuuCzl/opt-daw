@@ -6,8 +6,10 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="ejerepaso3" />
         <module name="ejercicio5" />
         <module name="ejercicio6" />
+        <module name="ejerepaso1" />
       </profile>
     </annotationProcessing>
   </component>
@@ -15,6 +17,8 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="ejercicio5" options="-parameters" />
       <module name="ejercicio6" options="-parameters" />
+      <module name="ejerepaso1" options="-parameters" />
+      <module name="ejerepaso3" options="-parameters" />
     </option>
   </component>
 </project>

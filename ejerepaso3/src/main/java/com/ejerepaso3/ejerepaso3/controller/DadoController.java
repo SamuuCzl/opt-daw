@@ -29,7 +29,7 @@ public class DadoController {
 
         }
 
-        if(caras!= 4,caras!= 6,caras!= 8,caras!= 10,caras!= 12,caras!= 20){
+        if(caras!= 4 || caras!= 6 || caras!= 8 || caras!= 10 || caras!= 12 || caras!= 20){
             //return new respuestaDados();
         }
     }

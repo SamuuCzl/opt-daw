@@ -2,11 +2,11 @@ package com.ejerRepaso2.ejerRepaso2.modelo;
 
 public class Libro {
 
-    public Integer id;
-    public String titulo;
-    public String autor;
-    public String categoria;
-    public Integer ejemplaresDisponibles;
+    private Integer id;
+    private String titulo;
+    private String autor;
+    private String categoria;
+    private Integer ejemplaresDisponibles;
 
     public Libro() {
     }

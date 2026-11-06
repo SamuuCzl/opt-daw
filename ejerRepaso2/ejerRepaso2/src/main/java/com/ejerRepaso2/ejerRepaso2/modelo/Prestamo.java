@@ -1,20 +1,20 @@
 package com.ejerRepaso2.ejerRepaso2.modelo;
 
 public class Prestamo {
-    public Integer libroId;
-    public String nombreSocio;
-    public Integer diasPrestamo;
-    public Boolean carnetPremio;
 
+    private Integer libroId;
+    private String nombreSocio;
+    private Integer diasPrestamo;
+    private boolean carnetPremium;
 
     public Prestamo() {
     }
 
-    public Prestamo(Integer libroId, String nombreSocio, Integer diasPrestamo, Boolean carnetPremio) {
+    public Prestamo(Integer libroId, String nombreSocio, Integer diasPrestamo, boolean carnetPremium) {
         this.libroId = libroId;
         this.nombreSocio = nombreSocio;
         this.diasPrestamo = diasPrestamo;
-        this.carnetPremio = carnetPremio;
+        this.carnetPremium = carnetPremium;
     }
 
     public Integer getLibroId() {
@@ -41,11 +41,11 @@ public class Prestamo {
         this.diasPrestamo = diasPrestamo;
     }
 
-    public Boolean getCarnetPremio() {
-        return carnetPremio;
+    public boolean isCarnetPremium() {
+        return carnetPremium;
     }
 
-    public void setCarnetPremio(Boolean carnetPremio) {
-        this.carnetPremio = carnetPremio;
+    public void setCarnetPremium(boolean carnetPremium) {
+        this.carnetPremium = carnetPremium;
     }
 }

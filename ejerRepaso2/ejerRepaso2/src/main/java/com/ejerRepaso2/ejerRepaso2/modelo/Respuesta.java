@@ -1,24 +1,28 @@
 package com.ejerRepaso2.ejerRepaso2.modelo;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Respuesta {
 
-    public String estado;
-    public String socio;
-    public String libro;
-    public Integer diasTotales;
-    public Date fechaDevolucion;
+    private String estado;
+    private String socio;
+    private  String libro;
+    private Integer diasTotales;
+    private LocalDate fechaDevolucion;
+    private String motivo;
 
-    public Respuesta() {
-    }
-
-    public Respuesta(String estado, String socio, String libro, Integer diasTotales, Date fechaDevolucion) {
+    public Respuesta(String estado, String socio, String libro, Integer diasTotales, LocalDate fechaDevolucion) {
         this.estado = estado;
         this.socio = socio;
         this.libro = libro;
         this.diasTotales = diasTotales;
         this.fechaDevolucion = fechaDevolucion;
+    }
+
+
+    public Respuesta(String estado, String motivo) {
+        this.estado = "RECHAZADO";
+        this.motivo = motivo;
     }
 
     public String getEstado() {
@@ -29,20 +33,12 @@ public class Respuesta {
         this.estado = estado;
     }
 
-    public Date getFechaDevolucion() {
-        return fechaDevolucion;
+    public String getSocio() {
+        return socio;
     }
 
-    public void setFechaDevolucion(Date fechaDevolucion) {
-        this.fechaDevolucion = fechaDevolucion;
-    }
-
-    public Integer getDiasTotales() {
-        return diasTotales;
-    }
-
-    public void setDiasTotales(Integer diasTotales) {
-        this.diasTotales = diasTotales;
+    public void setSocio(String socio) {
+        this.socio = socio;
     }
 
     public String getLibro() {
@@ -53,11 +49,27 @@ public class Respuesta {
         this.libro = libro;
     }
 
-    public String getSocio() {
-        return socio;
+    public Integer getDiasTotales() {
+        return diasTotales;
     }
 
-    public void setSocio(String socio) {
-        this.socio = socio;
+    public void setDiasTotales(Integer diasTotales) {
+        this.diasTotales = diasTotales;
+    }
+
+    public LocalDate getFechaDevolucion() {
+        return fechaDevolucion;
+    }
+
+    public void setFechaDevolucion(LocalDate fechaDevolucion) {
+        this.fechaDevolucion = fechaDevolucion;
+    }
+
+    public String getMotivo() {
+        return motivo;
+    }
+
+    public void setMotivo(String motivo) {
+        this.motivo = motivo;
     }
 }

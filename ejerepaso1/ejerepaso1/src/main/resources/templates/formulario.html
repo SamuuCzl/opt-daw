@@ -1,15 +1,50 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-
-
-
+    <meta charset="UTF-8">
+    <title>Taquilla de Teatro</title>
 </head>
 <body>
-<form action=" " method="">
-    <p>Obra: <input type="number" name=""></p>
 
+<h1>Reserva de entradas</h1>
+
+<form action="/reserva" method="post">
+
+    <label>Obra:</label>
+    <select name="eventoId">
+        <option value="101">La Casa de Bernarda Alba</option>
+        <option value="102">Yerma</option>
+        <option value="103">El Tragaluz</option>
+    </select>
+
+    <br><br>
+
+    <label>Nombre:</label>
+    <input type="text" name="nombreCliente" required>
+
+    <br><br>
+
+    <label>Tipo de entrada:</label>
+    <select name="tipoEntrada">
+        <option value="General">General</option>
+        <option value="VIP">VIP</option>
+    </select>
+
+    <br><br>
+
+    <label>Cantidad:</label>
+    <input type="number" name="cantidad" min="1" required>
+
+    <br><br>
+
+    <label>Cupón:</label>
+    <input type="text" name="codigoCupon">
+
+    <br><br>
+
+    <button type="submit">Reservar</button>
 
 </form>
+
 </body>
 </html>

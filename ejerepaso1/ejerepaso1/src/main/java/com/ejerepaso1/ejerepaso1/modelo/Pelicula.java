@@ -2,22 +2,19 @@ package com.ejerepaso1.ejerepaso1.modelo;
 
 public class Pelicula {
 
-    public Integer id;
-    public String titulo;
-    public Double precio;
-    public Integer asiento;
-
-
-    public Pelicula(Integer id, String titulo, Double precio, Integer asiento) {
-        this.id = id;
-        this.titulo = titulo;
-        this.precio = precio;
-        this.asiento = asiento;
-
-
-    }
+    private Integer id;
+    private String titulo;
+    private Double precioBase;
+    private Integer asientosLibres;
 
     public Pelicula() {
+    }
+
+    public Pelicula(Integer id, String titulo, Double precioBase, Integer asientosLibres) {
+        this.id = id;
+        this.titulo = titulo;
+        this.precioBase = precioBase;
+        this.asientosLibres = asientosLibres;
     }
 
     public Integer getId() {
@@ -36,21 +33,19 @@ public class Pelicula {
         this.titulo = titulo;
     }
 
-    public Double getPrecio() {
-        return precio;
+    public Double getPrecioBase() {
+        return precioBase;
     }
 
-    public void setPrecio(Double precio) {
-        this.precio = precio;
+    public void setPrecioBase(Double precioBase) {
+        this.precioBase = precioBase;
     }
 
-    public Integer getAsiento() {
-        return asiento;
+    public Integer getAsientosLibres() {
+        return asientosLibres;
     }
 
-    public void setAsiento(Integer asiento) {
-        this.asiento = asiento;
+    public void setAsientosLibres(Integer asientosLibres) {
+        this.asientosLibres = asientosLibres;
     }
 }
-
-

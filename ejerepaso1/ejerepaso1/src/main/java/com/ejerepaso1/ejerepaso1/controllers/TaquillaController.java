@@ -4,6 +4,7 @@ import com.ejerepaso1.ejerepaso1.Enums.Estado;
 import com.ejerepaso1.ejerepaso1.modelo.Pelicula;
 import com.ejerepaso1.ejerepaso1.modelo.Reserva;
 import com.ejerepaso1.ejerepaso1.modelo.Respuesta;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,90 +14,160 @@ import java.util.List;
 @Controller
 public class TaquillaController {
 
-    Pelicula[] peliculas = {new Pelicula(101,"La Casa de Bernarda Alba",25.0,10),
-    new Pelicula(102,"",32.0,5),
-    new Pelicula(103,"",18.0,20)};
+    // Guardamos las obras al iniciar el programa
+    Pelicula[] peliculas = {
+            new Pelicula(101, "La Casa de Bernarda Alba", 25.0, 10),
+            new Pelicula(102, "Yerma", 32.0, 5),
+            new Pelicula(103, "El Tragaluz", 18.0, 20)
+    };
 
+
+    // Mostramos el formulario
     @GetMapping("/reserva")
-    public String formularioReserva(){
+    public String mostrarFormulario() {
         return "formulario";
     }
 
+
+    // Buscamos las obras según los filtros recibidos
     @GetMapping("/cartelera")
     @ResponseBody
-    public List<Pelicula> consultarbuscarCatelera(@RequestParam(name="precioMax", required = false) Double precioMax,
-                                                  @RequestParam(name = "soloDisponibles", required = false)Boolean soloDIsponibles){
-        List<Pelicula> peliculasCartelera = new ArrayList<>();
+    public List<Pelicula> buscarCartelera(
+            @RequestParam(required = false) Double precioMax,
+            @RequestParam(required = false) Boolean soloDisponibles) {
 
-        if(precioMax != null && soloDIsponibles != null){
+        List<Pelicula> resultado = new ArrayList<>();
 
-            for (Pelicula pelicula : peliculas){
-                if(pelicula.getPrecio() <= precioMax && pelicula.getAsiento()>0){
-                    peliculasCartelera.add(pelicula);
+        for (Pelicula pelicula : peliculas) {
+
+            boolean mostrar = true;
+
+            if (precioMax != null) {
+                if (pelicula.getPrecioBase() > precioMax) {
+                    mostrar = false;
                 }
             }
 
-        }else if (precioMax!=null){
-
-            for(Pelicula pelicula : peliculas){
-                if(pelicula.getPrecio()<= precioMax) {
-                    peliculasCartelera.add(pelicula);
+            if (soloDisponibles != null) {
+                if (soloDisponibles == true && pelicula.getAsientosLibres() <= 0) {
+                    mostrar = false;
                 }
             }
-        }else if (soloDIsponibles!= null){
-            for(Pelicula pelicula : peliculas){
-                if(pelicula.getAsiento()>0) {
-                    peliculasCartelera.add(pelicula);
-                }
-            }
-        }else{
 
-            for(Pelicula pelicula: peliculas){
-                peliculasCartelera.add(pelicula);
+            if (mostrar == true) {
+                resultado.add(pelicula);
             }
         }
-        return peliculasCartelera;
+
+        return resultado;
     }
 
 
+    // Recibimos los datos del formulario
     @PostMapping("/reserva")
     @ResponseBody
-    public Respuesta validarReserva(@ModelAttribute Reserva reserva){
+    public synchronized Respuesta procesarReserva(@ModelAttribute Reserva reserva) {
+
         Pelicula pelicula = null;
 
-        for(Pelicula pelicula1:peliculas){
-            if(pelicula.getId() == reserva.getEventoId()){
-                pelicula = pelicula1;
+        // Buscamos la obra por su ID
+        for (Pelicula p : peliculas) {
+
+            if (p.getId().equals(reserva.getEventoId())) {
+                pelicula = p;
             }
         }
 
-        if(pelicula == null){
-           return new Respuesta("ID de pelicula incorrecto",)
+        // Comprobamos si existe la obra
+        if (pelicula == null) {
+            return new Respuesta(
+                    "La obra no existe",
+                    Estado.RECHAZADO
+            );
         }
 
-        if(reserva.getCantidad() > pelicula.getAsiento()){
-
-            return new Respuesta("",)
+        // Comprobamos la cantidad
+        if (reserva.getCantidad() == null || reserva.getCantidad() <= 0) {
+            return new Respuesta(
+                    "La cantidad debe ser mayor que cero",
+                    Estado.RECHAZADO
+            );
         }
 
-        double precioUnitario = reserva.getTipoEntrada().equals("VIP") ? pelicula.getPrecio() *1.2 : pelicula.getPrecio();
-        double importe = precioUnitario* reserva.getCantidad();
-        double descuento = 0;
-        double importeTemp = importe;
+        // Comprobamos el nombre del cliente
+        if (reserva.getNombreCliente() == null ||
+                reserva.getNombreCliente().isBlank()) {
 
-        if(reserva.getCantidad()>= 4){
-            descuento = importeTemp*0.1;
-            importeTemp-=descuento;
+            return new Respuesta(
+                    "El nombre es obligatorio",
+                    Estado.RECHAZADO
+            );
         }
 
-        if(reserva.getCodigoCupon().equals("DESCUENTO15")){
-            descuento += importeTemp*0.15;
-            importeTemp-=descuento;
+        // Comprobamos el tipo de entrada
+        if (reserva.getTipoEntrada() == null ||
+                (!reserva.getTipoEntrada().equals("General") &&
+                        !reserva.getTipoEntrada().equals("VIP"))) {
+
+            return new Respuesta(
+                    "Tipo de entrada incorrecto",
+                    Estado.RECHAZADO
+            );
         }
 
-        return  new Respuesta(
-          reserva.getNombreCliente(),
-          reserva.getCantidad(),precioUnitario,importe,descuento,importe-descuento, Estado.CONFIRMADO
+        // Comprobamos que queden asientos suficientes
+        if (reserva.getCantidad() > pelicula.getAsientosLibres()) {
+
+            return new Respuesta(
+                    "Aforo insuficiente. Asientos disponibles restantes: "
+                            + pelicula.getAsientosLibres(),
+                    Estado.RECHAZADO
+            );
+        }
+
+        // Calculamos el precio de una entrada
+        double precioUnitario = pelicula.getPrecioBase();
+
+        // Aplicamos el recargo VIP
+        if (reserva.getTipoEntrada().equals("VIP")) {
+            precioUnitario = precioUnitario * 1.20;
+        }
+
+        // Calculamos el subtotal
+        double subtotal = precioUnitario * reserva.getCantidad();
+
+        double total = subtotal;
+
+        // Descuento por comprar 4 o más entradas
+        if (reserva.getCantidad() >= 4) {
+            total = total - (total * 0.10);
+        }
+
+        // Descuento por cupón
+        if ("DESCUENTO15".equals(reserva.getCodigoCupon())) {
+            total = total - (total * 0.15);
+        }
+
+        // Redondeamos los resultados
+        total = Math.round(total * 100.0) / 100.0;
+
+        double descuentoTotal = subtotal - total;
+        descuentoTotal = Math.round(descuentoTotal * 100.0) / 100.0;
+
+        // Restamos los asientos reservados
+        pelicula.setAsientosLibres(
+                pelicula.getAsientosLibres() - reserva.getCantidad()
+        );
+
+        // Devolvemos la reserva confirmada
+        return new Respuesta(
+                reserva.getNombreCliente(),
+                reserva.getCantidad(),
+                precioUnitario,
+                subtotal,
+                descuentoTotal,
+                total,
+                Estado.CONFIRMADO
         );
     }
 }

@@ -1,27 +1,27 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>PRESTAMO</title>
+  <meta charset="UTF-8">
+  <title>Préstamo</title>
 </head>
 <body>
 
-    <form action = "" method="post">
-        <label for="libroId">ID del Libro: </label>
-        <input type="number" id="libroId" name="libroId" required><br>
+<form action="/prestamo" method="post">
 
-        <label for="nombreSocio">Nombre de socio: </label>
-        <input type="text" id="nombreSocio" name="nombreSocio" required><br>
+  <label for="libroId"> ID de libro:</label>
+  <input type="number" name="libroId" id="libroId" required>
 
-        <label for="diasPrestamo">Dias de préstamo: </label>
-        <input type="number" id="diasPrestamo" name="diasPrestamo" required><br>
+  <label for="nombreSocio"> Nombre del socio:</label>
+  <input type="text" name="nombreSocio" id="nombreSocio" required>
 
-        <label for="carnetPremium">¿Posee carnet premium?</label>
-        <input type="checkbox" id="carnetPremium" name="carnetPremium"><br>
+  <label for="diasPrestamo">Dias de prestamo:</label>
+  <input type="text" name="diasPrestamo" id="diasPrestamo" required>
 
+  <label for="carnetPremium">Canet premium</label>
+  <input type="checkbox" name="carnetPremium" id="carnetPremium">
 
-    </form>
-
+  <button type="submit">Enviar</button>
+</form>
 
 </body>
 </html>
